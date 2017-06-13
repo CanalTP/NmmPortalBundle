@@ -58,9 +58,9 @@ services:
         class: %sam_core.doctrine.entity_listener_resolver.class%
         arguments: [ "@service_container" ]
 
-    sam.component.authentication.handler.login_success_handler:
-        class:          "%sam_component_authentication_handler.class%"
-        arguments:  ['@doctrine', '@router', '@session']
+#    sam.component.authentication.handler.login_success_handler:
+#        class:          "%sam_component_authentication_handler.class%"
+#        arguments:  ['@doctrine', '@router', '@session']
 
     # Monitoring
     sam.business_monitoring.nmm:
