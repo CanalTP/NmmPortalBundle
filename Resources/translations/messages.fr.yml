@@ -4,7 +4,14 @@ customer:
     list:
         action:
             edit: Editer
+            delete: Supprimer
     coverage:
         undefined: %coverage% n'existe plus
     network:
         undefined: %network% n'existe plus
+    confirm_deletion:
+      title : Confirmer la suppression
+      prefix : Êtes-vous sûr de vouloir supprimer définitivement
+      suffix : ainsi que toutes ces données ?
+      cancel : Annuler
+

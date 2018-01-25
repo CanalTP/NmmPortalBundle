@@ -17,6 +17,10 @@ sam_customer_edit:
     pattern:  /customer/{id}/edit
     defaults: { _controller: CanalTPSamCoreBundle:Customer:edit }
 
+sam_customer_delete:
+    pattern:  /customer/{id}/delete
+    defaults: { _controller: CanalTPNmmPortalBundle:Customer:delete }
+
 sam_customer_show:
     pattern:  /customer/{id}/show
     defaults: { _controller: CanalTPSamCoreBundle:Customer:show }

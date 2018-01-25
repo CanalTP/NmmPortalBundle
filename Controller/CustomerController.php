@@ -58,6 +58,17 @@ class CustomerController extends \CanalTP\SamCoreBundle\Controller\AbstractContr
         );
     }
 
+    /**
+     * Removes a client
+     *
+     * @todo Implement remove action
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteAction()
+    {
+        return $this->redirectToRoute('sam_customer_list');
+    }
+
     private function dispatchEvent($form, $type)
     {
         $event = new CustomerEvent($form->getData());
