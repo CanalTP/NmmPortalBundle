@@ -2,17 +2,16 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">{{ 'customer.confirm_deletion.title'|trans }}</h4>
             </div>
             <div class="modal-body">
-                {{ 'customer.confirm_deletion.prefix'|trans }}
-                <strong class="client_name"></strong>
-                {{ 'customer.confirm_deletion.suffix'|trans }}
+                <p>{{ 'customer.confirm_deletion.body' | trans({'%name%' : customer_name}) | raw }}</p>
+                <div id="deletion_loading" class="alert alert-info hide">{{ 'customer.confirm_deletion.loading'| trans }} ...</div>
+                <div id="deletion_result" class="alert hide"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'customer.confirm_deletion.cancel'|trans }}</button>
-                <a href="#" class="btn btn-danger btn-ok">{{ 'customer.list.action.delete'|trans }}</a>
+                <button class="btn btn-danger btn-ok" id="submit-client-deletion">{{ 'customer.list.action.delete'|trans }}</button>
             </div>
         </div>
     </div>

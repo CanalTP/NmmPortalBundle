@@ -3,13 +3,12 @@
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets 'bundles/canaltpsamcore/css/customer.css' %}
-         <link rel="stylesheet" href="{{ asset_url }}?{{ assets_version }}" />
+        <link rel="stylesheet" href="{{ asset_url }}?{{ assets_version }}" />
     {% endstylesheets %}
 {% endblock %}
 
 {% block left_menu -%}
     {% include 'CanalTPSamCoreBundle:Customer:left_menu.html.twig' %}
-    {% include 'CanalTPNmmPortalBundle:Customer:deleteClientModal.html.twig' %}
 {% endblock %}
 
 {% block table_head -%}
@@ -34,29 +33,20 @@
             <td>{{ customer.created.format('d/m/Y') }}</td>
             <td class="action">
                 <div class="btn-group">
+                    <a id="edit-btn" class="btn btn-default" href="{{ path('sam_customer_edit', { 'id': customer.id }) }}">
+                        <span class="glyphicon glyphicon-edit array"></span> {{'customer.list.action.edit'|trans}}
+                    </a>
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                         <span class="caret"></span>
                         <span class="sr-only">{{'ctp_core.toggle_menu'|trans}}</span>
                     </button>
                     <ul class="dropdown-menu pull-right" role="menu">
                         <li>
-                            <a id="edit-btn" href="{{ path('sam_customer_edit', { 'id': customer.id }) }}">
-                                <span class="glyphicon glyphicon-edit array"></span> {{'customer.list.action.edit'|trans}}
-                            </a>
-                        </li>
-                        <li>
                             <a class="danger" href="{{ path('sam_customer_listtokens', { 'id': customer.id }) }}">
                                 <span class="glyphicon glyphicon-barcode array"></span> {{'global.actions.listtokens'|trans}}
                             </a>
-                        </li>
-                        <li>
                             <a class="danger" href="{{ path('sam_customer_show', { 'id': customer.id }) }}">
                                 <span class="glyphicon glyphicon-question-sign array"></span> {{ customer.name }} show page
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" data-href="{{ path('sam_customer_delete', { 'id': customer.id }) }}" data-toggle="modal" data-target="#modal-delete-client" class="danger modal-delete-client" title="{{'customer.list.action.delete'|trans}}" data-client-name="{{ customer.name }}">
-                                <span class="glyphicon glyphicon-trash array"></span> {{'customer.list.action.delete'|trans}}
                             </a>
                         </li>
                     </ul>
@@ -68,43 +58,35 @@
 {% endblock %}
 
 {% block list_pagination -%}
-     <div class="pager">
+    <div class="pager">
         <li><a class="prev" href="#">&laquo;</a></li>
         <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
         <li><a class="next" href="#">&raquo;</a></li>
     </div>
- {% endblock %}
+{% endblock %}
 
 {% block javascripts %}
     <script type="text/javascript">
-        require(['jquery_tablesorter_pager'], function(tableSorter) {
-            $(function() {
-                var pagerOptions = {
-                    // target the pager markup - see the HTML block below
-                    container: $(".pager"),
-                    // output string - default is '{page}/{totalPages}'; possible variables: {page}, {totalPages}, {startRow}, {endRow} and {totalRows}
-                    output: '{startRow} - {endRow} / {filteredRows} ({totalRows})',
-                    // if true, the table will remain the same height no matter how many records are displayed. The space is made up by an empty
-                    // table row set to a height to compensate; default is false
-                    fixedHeight: true,
-                    // remove rows from the table to speed up the sort of large tables.
-                    // setting this to false, only hides the non-visible rows; needed if you plan to add/remove rows with the pager enabled.
-                    removeRows: false,
-                    // go to page selector - select dropdown that sets the current page
-                    cssGoto: '.gotoPage',
-                    size: 50
-                };
+      require(['jquery_tablesorter_pager'], function(tableSorter) {
+        $(function() {
+          var pagerOptions = {
+            // target the pager markup - see the HTML block below
+            container: $(".pager"),
+            // output string - default is '{page}/{totalPages}'; possible variables: {page}, {totalPages}, {startRow}, {endRow} and {totalRows}
+            output: '{startRow} - {endRow} / {filteredRows} ({totalRows})',
+            // if true, the table will remain the same height no matter how many records are displayed. The space is made up by an empty
+            // table row set to a height to compensate; default is false
+            fixedHeight: true,
+            // remove rows from the table to speed up the sort of large tables.
+            // setting this to false, only hides the non-visible rows; needed if you plan to add/remove rows with the pager enabled.
+            removeRows: false,
+            // go to page selector - select dropdown that sets the current page
+            cssGoto: '.gotoPage',
+            size: 50
+          };
 
-                $("#table").tablesorter({dateFormat: 'ddmmyyyy'}).tablesorterPager(pagerOptions);
-            });
-
-          $('#modal-delete-client').on('show.bs.modal', function(e) {
-            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
-
-            console.log($(e.relatedTarget).data('client-name'));
-
-            $(this).find('.client_name').text($(e.relatedTarget).data('client-name'));
-          });
+          $("#table").tablesorter({dateFormat: 'ddmmyyyy'}).tablesorterPager(pagerOptions);
         });
+      });
     </script>
 {% endblock %}

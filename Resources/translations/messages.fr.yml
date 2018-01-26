@@ -11,7 +11,11 @@ customer:
         undefined: %network% n'existe plus
     confirm_deletion:
       title : Confirmer la suppression
-      prefix : Êtes-vous sûr de vouloir supprimer définitivement
-      suffix : ainsi que toutes ces données ?
+      body : Êtes-vous sûr de vouloir <strong>supprimer définitivement %name% </strong>ainsi que toutes ces données ?
+      loading : Chargement
       cancel : Annuler
-
+    delete:
+      success: Client name est supprimé
+      error: Une erreur est survenue lors de la suppression du client
+      could_not_be_found: Impossible de trouver le client
+      not_allowed: Vous n'êtes pas autorisé à supprimer ce client
