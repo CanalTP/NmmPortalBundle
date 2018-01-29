@@ -7,8 +7,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Collections\Criteria;
 use CanalTP\NmmPortalBundle\Entity\Customer as CustomerEntity;
-use CanalTP\SamCoreBundle\Entity\Application as ApplicationEntity;
-use CanalTP\NmmPortalBundle\Entity\Perimeter;
 use CanalTP\NmmPortalBundle\Form\Type\CustomerType;
 use CanalTP\SamCoreBundle\Event\SamCoreEvents;
 use CanalTP\NmmPortalBundle\Event\CustomerEvent;
@@ -40,22 +38,46 @@ class CustomerController extends \CanalTP\SamCoreBundle\Controller\AbstractContr
 
     public function showAction($id)
     {
-        $this->isGranted('BUSINESS_MANAGE_CLIENT');
+        $customer = $this->getCustomerById($id);
 
-        $customer = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('CanalTPNmmPortalBundle:Customer')
-            ->find($id);
+        return $this->render('CanalTPSamCoreBundle:Customer:show.html.twig', ['customer' => $customer]);
+    }
 
-        if (is_null($customer)) {
-            throw $this->createNotFoundException();
+    /**
+     * Remove a client
+     *
+     * @param integer $id customer ID
+     *
+     * @return JsonResponse
+     */
+    public function deleteAction($id)
+    {
+        $response = new JsonResponse();
+        $errorMsgPrefix = $this->get('translator')->trans('customer.delete.error') . ' : ';
+
+        try {
+            $notGrantedMsg = $this->get('translator')->trans('customer.delete.not_allowed');
+
+            $customer = $this->getCustomerById($id, $notGrantedMsg);
+            $customerName=$customer->getName();
+
+            $statusCode = Response::HTTP_OK;
+            $message = $this->get('translator')->trans('customer.delete.success', ['name' => $customerName]);
+        } catch (AccessDeniedException $e) {
+            $statusCode = Response::HTTP_FORBIDDEN;
+            $message = $errorMsgPrefix . $e->getMessage();
+        } catch (NotFoundHttpException $e) {
+            $statusCode = Response::HTTP_NOT_FOUND;
+            $message = $errorMsgPrefix . $e->getMessage();
+        } catch (\Exception $e) {
+            $statusCode =  Response::HTTP_INTERNAL_SERVER_ERROR;
+            $message = $errorMsgPrefix . $e->getMessage();
         }
-        return $this->render(
-            'CanalTPSamCoreBundle:Customer:show.html.twig',
-            array(
-                'customer' => $customer
-            )
-        );
+
+        $response->setData(['message' => $message]);
+        $response->setStatusCode($statusCode);
+
+        return $response;
     }
 
     private function dispatchEvent($form, $type)
@@ -248,5 +270,33 @@ class CustomerController extends \CanalTP\SamCoreBundle\Controller\AbstractContr
         $custoService->generateToken($customer, $application);
 
         return $this->redirect($this->generateUrl('sam_customer_listtokens', array('id' => $customer->getId())));
+    }
+
+    /**
+     * Retrieves customer by ID
+     *
+     * @param integer $id customerId
+     * @param string $notGrantedMsg exception message if not granted
+     * @return CustomerEntity
+     *
+     * @throws AccessDeniedException
+     * @throws NotFoundHttpException
+     */
+    private function getCustomerById($id, $notGrantedMsg = '')
+    {
+        $this->isGranted('BUSINESS_MANAGE_CLIENT', null, $notGrantedMsg);
+
+        $customer = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('CanalTPNmmPortalBundle:Customer')
+            ->find($id);
+
+        if (!$customer instanceof CustomerEntity) {
+            throw $this->createNotFoundException(
+                $this->get('translator')->trans('customer.delete.could_not_be_found')
+            );
+        }
+
+        return $customer;
     }
 }

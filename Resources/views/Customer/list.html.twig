@@ -3,7 +3,7 @@
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets 'bundles/canaltpsamcore/css/customer.css' %}
-         <link rel="stylesheet" href="{{ asset_url }}?{{ assets_version }}" />
+        <link rel="stylesheet" href="{{ asset_url }}?{{ assets_version }}" />
     {% endstylesheets %}
 {% endblock %}
 
@@ -58,35 +58,35 @@
 {% endblock %}
 
 {% block list_pagination -%}
-     <div class="pager">
+    <div class="pager">
         <li><a class="prev" href="#">&laquo;</a></li>
         <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
         <li><a class="next" href="#">&raquo;</a></li>
     </div>
- {% endblock %}
+{% endblock %}
 
 {% block javascripts %}
     <script type="text/javascript">
-        require(['jquery_tablesorter_pager'], function(tableSorter) {
-            $(function() {
-                var pagerOptions = {
-                    // target the pager markup - see the HTML block below
-                    container: $(".pager"),
-                    // output string - default is '{page}/{totalPages}'; possible variables: {page}, {totalPages}, {startRow}, {endRow} and {totalRows}
-                    output: '{startRow} - {endRow} / {filteredRows} ({totalRows})',
-                    // if true, the table will remain the same height no matter how many records are displayed. The space is made up by an empty
-                    // table row set to a height to compensate; default is false
-                    fixedHeight: true,
-                    // remove rows from the table to speed up the sort of large tables.
-                    // setting this to false, only hides the non-visible rows; needed if you plan to add/remove rows with the pager enabled.
-                    removeRows: false,
-                    // go to page selector - select dropdown that sets the current page
-                    cssGoto: '.gotoPage',
-                    size: 50
-                };
+      require(['jquery_tablesorter_pager'], function(tableSorter) {
+        $(function() {
+          var pagerOptions = {
+            // target the pager markup - see the HTML block below
+            container: $(".pager"),
+            // output string - default is '{page}/{totalPages}'; possible variables: {page}, {totalPages}, {startRow}, {endRow} and {totalRows}
+            output: '{startRow} - {endRow} / {filteredRows} ({totalRows})',
+            // if true, the table will remain the same height no matter how many records are displayed. The space is made up by an empty
+            // table row set to a height to compensate; default is false
+            fixedHeight: true,
+            // remove rows from the table to speed up the sort of large tables.
+            // setting this to false, only hides the non-visible rows; needed if you plan to add/remove rows with the pager enabled.
+            removeRows: false,
+            // go to page selector - select dropdown that sets the current page
+            cssGoto: '.gotoPage',
+            size: 50
+          };
 
-                $("#table").tablesorter({dateFormat: 'ddmmyyyy'}).tablesorterPager(pagerOptions);
-            });
+          $("#table").tablesorter({dateFormat: 'ddmmyyyy'}).tablesorterPager(pagerOptions);
         });
+      });
     </script>
 {% endblock %}

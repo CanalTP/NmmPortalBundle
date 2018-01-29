@@ -2,33 +2,44 @@ sam_business_inherit:
     resource: "@CanalTPSamCoreBundle/Resources/config/routing.yml"
 
 canal_tp_sam_homepage:
-    pattern:  /
+    path:  /
     defaults: { _controller: CanalTPSamCoreBundle:Sam:index }
 
 sam_customer_list:
-    pattern:  /customer
+    path:  /customer
     defaults: { _controller: CanalTPSamCoreBundle:Customer:list }
+    options:
+        expose: true
 
 sam_customer_new:
-    pattern:  /customer/new
+    path:  /customer/new
     defaults: { _controller: CanalTPSamCoreBundle:Customer:new }
 
 sam_customer_edit:
-    pattern:  /customer/{id}/edit
+    path:  /customer/{id}/edit
     defaults: { _controller: CanalTPSamCoreBundle:Customer:edit }
 
+sam_customer_delete:
+    path:  /customer/{id}/delete
+    defaults: { _controller: CanalTPNmmPortalBundle:Customer:delete }
+    methods:  [DELETE]
+    requirements:
+        id:   \d+
+    options:
+        expose: true
+
 sam_customer_show:
-    pattern:  /customer/{id}/show
+    path:  /customer/{id}/show
     defaults: { _controller: CanalTPSamCoreBundle:Customer:show }
 
 canal_tp_sam_network_list_json:
-    pattern: /coverage/{externalCoverageId}/networks
+    path: /coverage/{externalCoverageId}/networks
     defaults: { _controller: CanalTPSamCoreBundle:Customer:byCoverage }
     options:
         expose: true
 
 canal_tp_sam_network_check_permission_json:
-    pattern: /coverage/{externalCoverageId}/networks/{externalNetworkId}/{token}
+    path: /coverage/{externalCoverageId}/networks/{externalNetworkId}/{token}
     defaults: { _controller: CanalTPSamCoreBundle:Customer:checkAllowedToNetwork }
     requirements:
         token: -?[a-zA-Z0-9_\-:]*
@@ -36,13 +47,13 @@ canal_tp_sam_network_check_permission_json:
         expose: true
 
 sam_customer_regeneratetoken:
-    pattern:  /customer/{id}/token/{appId}/regenerate
+    path:  /customer/{id}/token/{appId}/regenerate
     defaults: { _controller: CanalTPSamCoreBundle:Customer:regenerateToken }
 
 sam_customer_regeneratealltokens:
-    pattern:  /customer/{id}/tokens/regenerate
+    path:  /customer/{id}/tokens/regenerate
     defaults: { _controller: CanalTPSamCoreBundle:Customer:regenerateTokens }
 
 sam_customer_listtokens:
-    pattern:  /customer/{id}/tokens
+    path:  /customer/{id}/tokens
     defaults: { _controller: CanalTPSamCoreBundle:Customer:listTokens }

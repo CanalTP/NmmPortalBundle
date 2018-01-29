@@ -65,11 +65,19 @@
         {{ form_widget(form._token) }}
         <button id="add-perimeter" type="submit" class="btn btn-default">{{ 'form.save'|trans }}</button>
 
+        {% if (form.vars.value.id is not empty) %}
+            {% include 'CanalTPNmmPortalBundle:Customer:deleteClientModal.html.twig' with {'customer_name': form.vars.value.name } only %}
+            <button class="btn btn-danger" id="delete_client" data-customer-id="{{ form.vars.value.id }}">
+                <span class="glyphicon glyphicon-trash array"></span> {{'customer.list.action.delete'|trans}}
+            </button>
+        {% endif %}
+
     <hr/>
 
     <script>
-        require(['sam/form/perimeter'], function(perimeterForm){
+        require(['sam/form/perimeter', 'nmm/form/client'], function(perimeterForm, clientForm){
             perimeterForm.init();
+            clientForm.handleDelete();
         });
     </script>
 
