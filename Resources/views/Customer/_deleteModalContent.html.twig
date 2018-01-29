@@ -1,0 +1,20 @@
+{% extends ['::modal.html.twig', 'CanalTPSamCoreBundle::modal.html.twig'] %}
+
+{% block modal_title %}
+    {{ 'customer.confirm_deletion.title'|trans }}
+{% endblock %}
+
+{% block modal_body %}
+    <p>{{ 'customer.confirm_deletion.body' | trans({'%name%' : customer_name}) | raw }}</p>
+    <div id="deletion_loading" class="alert alert-info hide">{{ 'customer.confirm_deletion.loading'| trans }} ...</div>
+    <div id="deletion_result" class="alert hide"></div>
+{% endblock %}
+
+{% block modal_foot %}
+    {% block modal_actions %}
+        <button class="btn btn-danger btn-ok" id="submit-client-deletion">{{ 'customer.list.action.delete'|trans }}</button>
+    {% endblock %}
+    {% block modal_close_footer %}
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'customer.confirm_deletion.cancel'|trans }}</button>
+    {% endblock %}
+{% endblock %}

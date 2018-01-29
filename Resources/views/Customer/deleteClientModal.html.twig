@@ -1,18 +1,7 @@
 <div class="modal fade" id="modal-delete-client" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">{{ 'customer.confirm_deletion.title'|trans }}</h4>
-            </div>
-            <div class="modal-body">
-                <p>{{ 'customer.confirm_deletion.body' | trans({'%name%' : customer_name}) | raw }}</p>
-                <div id="deletion_loading" class="alert alert-info hide">{{ 'customer.confirm_deletion.loading'| trans }} ...</div>
-                <div id="deletion_result" class="alert hide"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'customer.confirm_deletion.cancel'|trans }}</button>
-                <button class="btn btn-danger btn-ok" id="submit-client-deletion">{{ 'customer.list.action.delete'|trans }}</button>
-            </div>
+            {% include 'CanalTPNmmPortalBundle:Customer:_deleteModalContent.html.twig'%}
         </div>
     </div>
 </div>
