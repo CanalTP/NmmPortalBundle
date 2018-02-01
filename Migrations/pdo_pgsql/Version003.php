@@ -14,25 +14,29 @@ class Version003 extends AbstractMigration
         return self::VERSION;
     }
 
-    /**
-     * Update / create constraints on customer / user tables
-     *
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
-        $this->addSql('ALTER TABLE public.t_user_usr
-          ADD CONSTRAINT fk_customer_user FOREIGN KEY (cus_id)
-            REFERENCES public.tr_customer_cus(cus_id)
-            ON UPDATE CASCADE ON DELETE CASCADE'
-        );
+        $this->addSql('
+          ALTER TABLE public.t_user_usr
+          ADD CONSTRAINT fk_customer_user 
+          FOREIGN KEY (cus_id)
+          REFERENCES public.tr_customer_cus (cus_id)
+          ON DELETE CASCADE;');
 
-        $this->addSql('ALTER TABLE public.tj_user_role_ur
+        $this->addSql('
+          ALTER TABLE public.t_perimeter_per
+          ADD CONSTRAINT fk_customer_perimeter 
+          FOREIGN KEY (nav_id)
+          REFERENCES public.t_navitia_entity_nav (nav_id)
+          ON DELETE CASCADE;');
+
+        $this->addSql('
+          ALTER TABLE public.tj_user_role_ur
           DROP CONSTRAINT fk_cc9b191bc69d3fb,
-          ADD CONSTRAINT fk_cc9b191bc69d3fb FOREIGN KEY (usr_id)
-          REFERENCES public.t_user_usr (usr_id) MATCH SIMPLE
-          ON UPDATE CASCADE ON DELETE CASCADE'
-        );
+          ADD CONSTRAINT fk_cc9b191bc69d3fb 
+          FOREIGN KEY (usr_id)
+          REFERENCES public.t_user_usr (usr_id)
+          ON DELETE CASCADE;');
 
         $this->addSql('
           ALTER TABLE public.tj_customer_application_cap
@@ -83,21 +87,21 @@ class Version003 extends AbstractMigration
           ON DELETE CASCADE;');
     }
 
-    /**
-     * Resets constraints on customer / user tables
-     *
-     * @param Schema $schema
-     */
     public function down(Schema $schema)
     {
-        $this->addSql('ALTER TABLE public.tj_user_role_ur
+        $this->addSql('
+          ALTER TABLE public.tj_user_role_ur
           DROP CONSTRAINT fk_cc9b191bc69d3fb,
-          ADD CONSTRAINT fk_cc9b191bc69d3fb FOREIGN KEY (usr_id)
-          REFERENCES public.t_user_usr (usr_id) MATCH SIMPLE
-          ON UPDATE NO ACTION ON DELETE NO ACTION'
-        );
+          ADD CONSTRAINT fk_cc9b191bc69d3fb 
+          FOREIGN KEY (usr_id)
+          REFERENCES public.t_user_usr (usr_id);');
 
-        $this->addSql('ALTER TABLE public.t_user_usr
+        $this->addSql('
+          ALTER TABLE public.t_perimeter_per
+          DROP CONSTRAINT fk_customer_perimeter;');
+
+        $this->addSql('
+          ALTER TABLE public.t_user_usr
           DROP CONSTRAINT fk_customer_user'
         );
 
