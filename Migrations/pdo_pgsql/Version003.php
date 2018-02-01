@@ -25,7 +25,7 @@ class Version003 extends AbstractMigration
 
         $this->addSql('
           ALTER TABLE public.t_perimeter_per
-          ADD CONSTRAINT fk_customer_perimeter 
+          ADD CONSTRAINT fk_navitia_perimeter 
           FOREIGN KEY (nav_id)
           REFERENCES public.t_navitia_entity_nav (nav_id)
           ON DELETE CASCADE;');
