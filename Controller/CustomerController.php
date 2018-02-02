@@ -11,6 +11,7 @@ use CanalTP\NmmPortalBundle\Form\Type\CustomerType;
 use CanalTP\SamCoreBundle\Event\SamCoreEvents;
 use CanalTP\NmmPortalBundle\Event\CustomerEvent;
 use CanalTP\SamCoreBundle\Exception\CustomerEventException;
+use CanalTP\SamCoreBundle\Entity\CustomerInterface;
 
 /**
  * Description of CustomerController
@@ -59,10 +60,10 @@ class CustomerController extends \CanalTP\SamCoreBundle\Controller\AbstractContr
             $notGrantedMsg = $this->get('translator')->trans('customer.delete.not_allowed');
 
             $customer = $this->getCustomerById($id, $notGrantedMsg);
-            $customerName=$customer->getName();
+            $this->dispatchEvent($customer, SamCoreEvents::DELETE_CLIENT);
 
             $statusCode = Response::HTTP_OK;
-            $message = $this->get('translator')->trans('customer.delete.success', ['name' => $customerName]);
+            $message = $this->get('translator')->trans('customer.delete.success', ['name' => $customer->getName()]);
         } catch (AccessDeniedException $e) {
             $statusCode = Response::HTTP_FORBIDDEN;
             $message = $errorMsgPrefix . $e->getMessage();
@@ -80,9 +81,17 @@ class CustomerController extends \CanalTP\SamCoreBundle\Controller\AbstractContr
         return $response;
     }
 
-    private function dispatchEvent($form, $type)
+    /**
+     * Dispatch event on customer change
+     *
+     * @param CustomerInterface $customer
+     * @param string $type of dispatch event.
+     *
+     * @return Event
+     */
+    private function dispatchEvent(CustomerInterface $data, $type)
     {
-        $event = new CustomerEvent($form->getData());
+        $event = new CustomerEvent($data);
         try {
             $this->get('event_dispatcher')->dispatch($type, $event);
         } catch (CustomerEventException $e) {
@@ -110,7 +119,7 @@ class CustomerController extends \CanalTP\SamCoreBundle\Controller\AbstractContr
         );
 
         $form->handleRequest($request);
-        if ($form->isValid() && $this->dispatchEvent($form, SamCoreEvents::EDIT_CLIENT)) {
+        if ($form->isValid() && $this->dispatchEvent($form->getData(), SamCoreEvents::EDIT_CLIENT)) {
             $this->get('sam_core.customer')->save($form->getData());
             $this->addFlashMessage('success', 'customer.flash.edit.success');
 
@@ -144,7 +153,7 @@ class CustomerController extends \CanalTP\SamCoreBundle\Controller\AbstractContr
         );
 
         $form->handleRequest($request);
-        if ($form->isValid() && $this->dispatchEvent($form, SamCoreEvents::CREATE_CLIENT)) {
+        if ($form->isValid() && $this->dispatchEvent($form->getData(), SamCoreEvents::CREATE_CLIENT)) {
             $this->get('sam_core.customer')->save($form->getData());
             $this->addFlashMessage('success', 'customer.flash.creation.success');
 
