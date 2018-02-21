@@ -4,7 +4,7 @@ namespace CanalTP\NmmPortalBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\File;
@@ -104,12 +104,7 @@ class CustomerType extends \CanalTP\SamCoreBundle\Form\Type\CustomerType
         $this->addApplicationsField($builder);
     }
 
-    public function getName()
-    {
-        return 'customer';
-    }
-
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             array(

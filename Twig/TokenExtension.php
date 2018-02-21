@@ -35,10 +35,4 @@ class TokenExtension extends \Twig_Extension
 
         return true;
     }
-
-    public function getName()
-    {
-        return 'token';
-    }
-
 }
