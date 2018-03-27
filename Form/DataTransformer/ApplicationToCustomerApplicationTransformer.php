@@ -16,24 +16,12 @@ class ApplicationToCustomerApplicationTransformer implements DataTransformerInte
     private $om;
     private $navitiaTokenManager;
     private $oldCustomerApplications;
-    private $oldPerimetersCode;
 
     public function __construct(ObjectManager $om, NavitiaTokenManager $navitiaTokenManager)
     {
         $this->om = $om;
         $this->navitiaTokenManager = $navitiaTokenManager;
         $this->oldCustomerApplications = array();
-        $this->oldPerimeters = null;
-    }
-
-    private function generatePerimertersArray($perimeters)
-    {
-        $result = array();
-
-        foreach ($perimeters as $perimeter) {
-            $result[$perimeter->getExternalCoverageId()] = $perimeter->getExternalCoverageId();
-        }
-        return ($result);
     }
 
     public function transform($customer)
@@ -42,7 +30,6 @@ class ApplicationToCustomerApplicationTransformer implements DataTransformerInte
             return ($customer);
         }
         $applications = new ArrayCollection();
-        $this->oldPerimeters = $this->generatePerimertersArray($customer->getNavitiaEntity()->getPerimeters());
 
         foreach ($customer->getActiveCustomerApplications() as $customerApplication) {
             $customerApplication->setIsActive(false);
@@ -85,10 +72,9 @@ class ApplicationToCustomerApplicationTransformer implements DataTransformerInte
         } catch (\Exception $exception) {
             throw new TransformationFailedException('Tyr error: ' . $exception->getMessage());
         }
-        $forceGenerateToken = !($this->oldPerimeters == $this->generatePerimertersArray($customer->getNavitiaEntity()->getPerimeters()));
 
         foreach ($customer->getApplications() as $application) {
-            if (!$forceGenerateToken && array_key_exists($application->getId(), $this->oldCustomerApplications)) {
+            if (array_key_exists($application->getId(), $this->oldCustomerApplications)) {
                 $customerApplication = $this->oldCustomerApplications[$application->getId()];
                 $customerApplication->setIsActive(true);
                 $customerApplications->add($customerApplication);
