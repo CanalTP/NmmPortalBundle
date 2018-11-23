@@ -61,7 +61,7 @@ class CustomerTranslatorTest extends TranslatorTest
         $container
             ->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function($arg) use ($loader) {
+            ->will($this->returnCallback(function ($arg) use ($loader) {
                 if ($arg == 'security.context') {
                     return ($this->securityContext);
                 }

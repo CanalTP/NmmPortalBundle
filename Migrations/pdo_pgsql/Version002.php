@@ -32,4 +32,3 @@ class Version002 extends AbstractMigration
         $this->addSql("UPDATE tr_application_app SET app_bundle_name = '' WHERE app_canonical_name='samcore'");
     }
 }
-

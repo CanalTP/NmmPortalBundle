@@ -7,10 +7,9 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Description of PerimeterManager
- *
- * @author Kévin Ziemianski
  */
-class PerimeterManager {
+class PerimeterManager
+{
 
     private $repository = null;
     private $om = null;
@@ -28,7 +27,7 @@ class PerimeterManager {
                 return ($perimeter);
             }
         }
-        throw new AccessDeniedException();        
+        throw new AccessDeniedException();
     }
 
     public function findOneByExternalNetworkId($customer, $externalNetworkId)
@@ -36,7 +35,6 @@ class PerimeterManager {
         $perimeters = $customer->getPerimeters();
 
         return ($this->getPerimeterByExtenalNetworkId($perimeters, $externalNetworkId));
-
     }
 
     public function findOneByCustomerIdAndExternalNetworkId($customerId, $externalNetworkId)

@@ -38,8 +38,7 @@ class CustomerType extends \CanalTP\SamCoreBundle\Form\Type\CustomerType
         ApplicationToCustomerApplicationTransformer $applicationsTransformer,
         ApplicationToCustomerApplicationTransformerWithToken $applicationsTransformerWithToken,
         $withTyr
-    )
-    {
+    ) {
         $this->em = $em;
         $this->coverages = $coverages;
         $this->navitia = $navitia;
@@ -50,8 +49,7 @@ class CustomerType extends \CanalTP\SamCoreBundle\Form\Type\CustomerType
 
     private function addApplicationsField(FormBuilderInterface $builder)
     {
-        if ($this->withTyr)
-        {
+        if ($this->withTyr) {
             $builder->add(
                 'applications',
                 'entity',
@@ -59,7 +57,7 @@ class CustomerType extends \CanalTP\SamCoreBundle\Form\Type\CustomerType
                     'label' => 'customer.applications',
                     'multiple' => true,
                     'class' => 'CanalTPSamCoreBundle:Application',
-                    'query_builder' => function(EntityRepository $er) {
+                    'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('cli')
                             ->orderBy('cli.name', 'ASC');
                     },
