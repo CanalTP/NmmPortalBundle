@@ -2,10 +2,11 @@
 
 namespace CanalTP\NmmPortalBundle\Entity;
 
-use CanalTP\SamCoreBundle\Entity\CustomerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use CanalTP\SamCoreBundle\Entity\CustomerInterface;
+use CanalTP\SamCoreBundle\Slugify;
 
 class Customer extends \CanalTP\SamCoreBundle\Entity\AbstractEntity implements CustomerInterface
 {
@@ -162,9 +163,8 @@ class Customer extends \CanalTP\SamCoreBundle\Entity\AbstractEntity implements C
 
     protected function setNameCanonical($name)
     {
-        $slug = new \CanalTP\SamCoreBundle\Slugify();
+        $this->nameCanonical = Slugify::format($name, '_');
 
-        $this->nameCanonical = $slug->slugify($name, '_');
         return $this;
     }
 

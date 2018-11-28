@@ -4,6 +4,8 @@ namespace CanalTP\NmmPortalBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use CanalTP\SamCoreBundle\Slugify;
+
 
 /**
  * NavitiaEntity
@@ -134,8 +136,7 @@ class NavitiaEntity extends \CanalTP\SamCoreBundle\Entity\AbstractEntity
      */
     protected function setNameCanonical($name)
     {
-        $slug = new \CanalTP\SamCoreBundle\Slugify();
-        $this->nameCanonical = $slug->slugify($name);
+        $this->nameCanonical = Slugify::format($name);
 
         return $this;
     }
