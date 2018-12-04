@@ -50,7 +50,6 @@ services:
 
     sam_core.role_listener:
         class: %sam_core.role_listener.class%
-        arguments: ['@sam_core.slugify']
         tags:
             -  { name: doctrine.entity_listener }
 

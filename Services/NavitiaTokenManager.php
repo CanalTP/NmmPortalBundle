@@ -299,7 +299,7 @@ class NavitiaTokenManager
     {
         try {
             $this->user = $this->findUser($email);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             throw new \Exception('Navitia error : ' . $e->getMessage());
         }
 
@@ -322,7 +322,7 @@ class NavitiaTokenManager
         $this->samNavitia->setToken($token);
         try {
             $networks = $this->samNavitia->getNetWorks($externalCoverageId);
-        } catch(\Navitia\Component\Exception\NavitiaException $e) {
+        } catch (\Navitia\Component\Exception\NavitiaException $e) {
             return $response;
         }
 

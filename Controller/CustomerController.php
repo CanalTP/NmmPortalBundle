@@ -151,7 +151,7 @@ class CustomerController extends \CanalTP\SamCoreBundle\Controller\AbstractContr
         try {
             $networks = $navitia->getNetworks($externalCoverageId);
             asort($networks);
-        } catch(\Navitia\Component\Exception\NavitiaException $e) {
+        } catch (\Navitia\Component\Exception\NavitiaException $e) {
             $response->setData(array('status' => $status));
             $response->setStatusCode($status);
 
@@ -181,7 +181,7 @@ class CustomerController extends \CanalTP\SamCoreBundle\Controller\AbstractContr
         $navitia->setToken($token);
         try {
             $networks = $navitia->getNetworks($externalCoverageId);
-        } catch(\Navitia\Component\Exception\NavitiaException $e) {
+        } catch (\Navitia\Component\Exception\NavitiaException $e) {
             $response->setData(array('status' => $status));
             $response->setStatusCode($status);
 

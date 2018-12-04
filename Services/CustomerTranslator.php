@@ -21,7 +21,7 @@ class CustomerTranslator extends Translator implements TranslatorInterface, Tran
     {
         $token = $this->container->get('security.context')->getToken();
 
-        if ($token instanceof TokenInterface && $token->getUser() instanceof User) { 
+        if ($token instanceof TokenInterface && $token->getUser() instanceof User) {
             if ($this->customerId === null && $token->getUser() != 'anon.') {
                 $this->customerId = $token->getUser()->getCustomer()->getIdentifier();
             }

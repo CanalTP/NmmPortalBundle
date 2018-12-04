@@ -14,16 +14,16 @@ class CustomerManager extends \CanalTP\SamCoreBundle\Services\CustomerManager
     protected $repository = null;
     protected $navitiaTokenManager = null;
 
-    public function __construct(ObjectManager $om,
+    public function __construct(
+        ObjectManager $om,
         $navitiaTokenManager,
         ApplicationFinder $applicationFinder
-    )
-    {
+    ) {
         parent::__construct($om, $navitiaTokenManager, $applicationFinder);
         $this->repository = $this->om->getRepository('CanalTPNmmPortalBundle:Customer');
     }
 
-    public function findOneBy(Array $filters)
+    public function findOneBy(array $filters)
     {
         return ($this->repository->findOneBy($filters));
     }
