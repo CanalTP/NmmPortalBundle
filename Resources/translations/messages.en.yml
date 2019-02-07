@@ -1,0 +1,18 @@
+customer:
+    token:
+        placeholder: Token of navitia
+    list:
+        action:
+            edit: Edit
+    coverage:
+        undefined: %coverage% undefined
+    network:
+        undefined: %network% undefined
+    archive:
+        title: Deactivate customer
+        confirm: Are you sure you want to do this action?
+        error: Unable to find Customer entity.
+        flash:
+            success: Customer %customer% has been deactivated
+    actions:
+        archive: Deactivate

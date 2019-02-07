@@ -58,6 +58,74 @@ class CustomerController extends \CanalTP\SamCoreBundle\Controller\AbstractContr
         );
     }
 
+    public function archiveAction(Request $request, $id)
+    {
+        $this->isGranted('BUSINESS_MANAGE_CLIENT');
+
+        $form = $this->createArchiveForm($id);
+
+        if ($request->getMethod() == 'GET') {
+            $customer = $this->getDoctrine()
+                ->getManager()
+                ->getRepository('CanalTPNmmPortalBundle:Customer')
+                ->find($id);
+
+            if (is_null($customer)) {
+                return $this->render(
+                    'CanalTPNmmPortalBundle:Customer:error.html.twig',
+                    array(
+                        'error' => 'customer.archive.error'
+                    )
+                );
+            }
+
+            return $this->render(
+                'CanalTPNmmPortalBundle:Customer:archive.html.twig',
+                array(
+                    'customer' => $customer,
+                    'archive_form' => $form->createView(),
+                )
+            );
+        } else {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $customer = $this->getDoctrine()
+                    ->getManager()
+                    ->getRepository('CanalTPNmmPortalBundle:Customer')
+                    ->find($id);
+
+                if (is_null($customer)) {
+                    return $this->render(
+                        'CanalTPNmmPortalBundle:Customer:error.html.twig',
+                        array(
+                            'error' => 'customer.archive.error'
+                        )
+                    );
+                }
+                $customerManager = $this->container->get('sam_core.customer');
+                $customerManager->archiveCustomer($customer);
+                $this->addFlashMessage('success', $this->get('translator')->trans('customer.archive.flash.success', ['%customer%' => $customer->getName()]));
+            }
+
+            return $this->redirect($this->generateUrl('sam_customer_list'));
+        }
+    }
+
+    /**
+     * Creates a form to archive a Customer entity by id.
+     *
+     * @param mixed $id The customer id
+     *
+     * @return Symfony\Component\Form\Form The form
+     */
+    private function createArchiveForm($id)
+    {
+        return $this->createFormBuilder(array('id' => $id))
+            ->add('id', 'hidden')
+            ->getForm();
+    }
+
     private function dispatchEvent($form, $type)
     {
         $event = new CustomerEvent($form->getData());

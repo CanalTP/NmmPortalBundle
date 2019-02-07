@@ -8,3 +8,11 @@ customer:
         undefined: %coverage% n'existe plus
     network:
         undefined: %network% n'existe plus
+    archive:
+        title: Désactiver le client
+        confirm: Êtes-vous sûr de vouloir faire cette action ?
+        error: Impossible de trouver l'entité client.
+        flash:
+            success: Le client %customer% a été désactivé
+    actions:
+        archive: Désactiver

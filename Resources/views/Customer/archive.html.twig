@@ -1,0 +1,22 @@
+{% extends ['::modal.html.twig', 'CanalTPSamCoreBundle::modal.html.twig'] %}
+
+{% block modal_title %}
+    {{'customer.archive.title'|trans}}
+{% endblock %}
+
+{% block modal_body %}
+    <p>{{'customer.archive.confirm'|trans}}</p>
+{% endblock %}
+
+{% block open_form %}
+<form action="{{ path('sam_customer_archive', { 'id': customer.id }) }}" method="post">
+    <input type="hidden" name="_method" value="DELETE" />
+    {% endblock %}
+
+    {% block modal_actions %}
+    {{ form_widget(archive_form) }}
+    <button class="btn btn-danger" type="submit">
+        <span class="glyphicon glyphicon-trash"></span> {{'customer.actions.archive'|trans}}
+    </button>
+</form>
+{% endblock %}
