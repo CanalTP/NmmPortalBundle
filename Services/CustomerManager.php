@@ -60,7 +60,7 @@ class CustomerManager extends \CanalTP\SamCoreBundle\Services\CustomerManager
         $this->om->flush();
     }
 
-    public function archiveCustomer($customer)
+    public function archive($customer)
     {
         $customer->setLocked(true);
         $usersOfCustomer = $customer->getUsers();

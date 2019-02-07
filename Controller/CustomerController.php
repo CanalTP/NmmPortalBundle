@@ -104,7 +104,7 @@ class CustomerController extends \CanalTP\SamCoreBundle\Controller\AbstractContr
                     );
                 }
                 $customerManager = $this->container->get('sam_core.customer');
-                $customerManager->archiveCustomer($customer);
+                $customerManager->archive($customer);
                 $this->addFlashMessage('success', $this->get('translator')->trans('customer.archive.flash.success', ['%customer%' => $customer->getName()]));
             }
 
