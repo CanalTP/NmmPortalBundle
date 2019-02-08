@@ -25,3 +25,4 @@ Feature: Customer List
     When I press "Désactiver"
     Then I should be on "/admin/customer"
     And I should see an ".alert-success" element
+    And I should see 1 "tbody tr" selector elements
