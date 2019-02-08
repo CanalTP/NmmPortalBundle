@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block open_form %}
-<form action="{{ path('sam_customer_archive', { 'id': customer.id }) }}" method="post">
+<form action="{{ path('sam_customer_archive_save', { 'id': customer.id }) }}" method="post">
     <input type="hidden" name="_method" value="DELETE" />
     {% endblock %}
 

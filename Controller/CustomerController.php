@@ -58,18 +58,14 @@ class CustomerController extends \CanalTP\SamCoreBundle\Controller\AbstractContr
         );
     }
 
-    public function archiveAction(Request $request, $id)
+    public function archiveFormAction(Request $request, $id)
     {
         $this->isGranted('BUSINESS_MANAGE_CLIENT');
 
         $form = $this->createArchiveForm($id);
 
         if ($request->getMethod() == 'GET') {
-            $customer = $this->getDoctrine()
-                ->getManager()
-                ->getRepository('CanalTPNmmPortalBundle:Customer')
-                ->find($id);
-
+            $customer = $this->findCustomerById($id);
             if (is_null($customer)) {
                 return $this->render(
                     'CanalTPNmmPortalBundle:Customer:error.html.twig',
@@ -78,7 +74,6 @@ class CustomerController extends \CanalTP\SamCoreBundle\Controller\AbstractContr
                     )
                 );
             }
-
             return $this->render(
                 'CanalTPNmmPortalBundle:Customer:archive.html.twig',
                 array(
@@ -86,30 +81,49 @@ class CustomerController extends \CanalTP\SamCoreBundle\Controller\AbstractContr
                     'archive_form' => $form->createView(),
                 )
             );
-        } else {
-            $form->bind($request);
-
-            if ($form->isValid()) {
-                $customer = $this->getDoctrine()
-                    ->getManager()
-                    ->getRepository('CanalTPNmmPortalBundle:Customer')
-                    ->find($id);
-
-                if (is_null($customer)) {
-                    return $this->render(
-                        'CanalTPNmmPortalBundle:Customer:error.html.twig',
-                        array(
-                            'error' => 'customer.archive.error'
-                        )
-                    );
-                }
-                $customerManager = $this->container->get('sam_core.customer');
-                $customerManager->archive($customer);
-                $this->addFlashMessage('success', $this->get('translator')->trans('customer.archive.flash.success', ['%customer%' => $customer->getName()]));
-            }
-
-            return $this->redirect($this->generateUrl('sam_customer_list'));
         }
+    }
+
+    public function saveArchiveAction (Request $request, $id)
+    {
+        $this->isGranted('BUSINESS_MANAGE_CLIENT');
+
+        $form = $this->createArchiveForm($id);
+
+        $form->bind($request);
+
+        if ($form->isValid()) {
+            $customer = $this->findCustomerById($id);
+            if (is_null($customer)) {
+                return $this->render(
+                    'CanalTPNmmPortalBundle:Customer:error.html.twig',
+                    array(
+                        'error' => 'customer.archive.error'
+                    )
+                );
+            }
+            $customerManager = $this->container->get('sam_core.customer');
+            $customerManager->archive($customer);
+            $this->addFlashMessage('success', $this->get('translator')->trans('customer.archive.flash.success', ['%customer%' => $customer->getName()]));
+        }
+
+        return $this->redirect($this->generateUrl('sam_customer_list'));
+    }
+
+    /**
+     * Find a Customer by id.
+     *
+     * @param mixed $id The customer id
+     *
+     * @return CanalTP\NmmPortalBundle\Entity\Customer
+     */
+    public function findCustomerById ($id) {
+        $customer = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('CanalTPNmmPortalBundle:Customer')
+            ->find($id);
+
+        return $customer;
     }
 
     /**

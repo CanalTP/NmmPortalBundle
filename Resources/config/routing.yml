@@ -48,6 +48,10 @@ sam_customer_listtokens:
     defaults: { _controller: CanalTPSamCoreBundle:Customer:listTokens }
 
 sam_customer_archive:
-    pattern:  /customer/{id}/archive
-    defaults: { _controller: CanalTPSamCoreBundle:Customer:archive }
+    pattern:  /customer/{id}/archive/form
+    defaults: { _controller: CanalTPSamCoreBundle:Customer:archiveForm }
+
+sam_customer_archive_save:
+    pattern:  /customer/{id}/archive/save
+    defaults: { _controller: CanalTPSamCoreBundle:Customer:saveArchive }
 
