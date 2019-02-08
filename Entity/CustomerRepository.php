@@ -12,9 +12,10 @@ use Doctrine\ORM\EntityRepository;
  */
 class CustomerRepository extends EntityRepository
 {
+    private $filter = array('locked' => false);
 
     public function findAll() {
-        return $this->findBy(array('locked' => false));
+        return $this->findBy($this->filter);
     }
 
     public function findAllToArray()
@@ -27,10 +28,10 @@ class CustomerRepository extends EntityRepository
         return ($customers);
     }
 
-    public function findByToArray($criterias)
+    public function findByToArray(array $criterias = [])
     {
         $customers = array();
-
+        $criterias = array_merge($criterias, $this->filter);
         foreach ($this->findBy($criterias) as $customer) {
             $customers[$customer->getId()] = $customer->getName();
         }
