@@ -14,13 +14,7 @@ class CustomerRepository extends EntityRepository
 {
 
     public function findAll() {
-        $customers = parent::findAll();
-        foreach ($customers as $key => $customer) {
-            if ($customer->getLocked()) {
-                unset($customers[$key]);
-            }
-        }
-        return $customers;
+        return $this->findBy(array('locked' => false));
     }
 
     public function findAllToArray()
