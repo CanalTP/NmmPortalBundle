@@ -6,3 +6,4 @@ Feature: Customer List
     Scenario: Edit page link
       When I am on "/admin/customer"
       Then I should see an "#edit-btn" element
+      And I should see an ".archive" element
