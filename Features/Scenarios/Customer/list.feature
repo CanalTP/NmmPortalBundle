@@ -6,6 +6,11 @@ Feature: Customer List
     Then I should see an ".edit-btn" element
     And I should see an ".archive" element
 
+  Scenario: Check if "Realtime Test" customer in the list
+    Given I am logged in as Administrator
+    When I am on "/admin/customer"
+    Then I should see "Realtime Test"
+
   Scenario: Check if deactivate link exist
     Given I am logged in as Administrator
     And I am on "/admin/customer"
@@ -15,7 +20,7 @@ Feature: Customer List
     And I wait 2 seconds
     Then I should see "Désactiver le client"
 
-  Scenario: Deactivate a customer
+  Scenario: Deactivate customer "Realtime Test"
     Given I am logged in as Administrator
     And I am on "/admin/customer"
     And I press "show-toggled-actions-2"
@@ -23,6 +28,7 @@ Feature: Customer List
     And I follow "archive-2"
     And I wait 2 seconds
     When I press "Désactiver"
-    Then I should be on "/admin/customer"
-    And I should see an ".alert-success" element
-    And I should see 1 "tbody tr" selector elements
+    Then I should see an ".alert-success" element
+    When I am on "/admin/customer"
+    Then I should see "CanalTP"
+    And I should not see "Realtime Test"
