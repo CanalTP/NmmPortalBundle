@@ -60,6 +60,17 @@ class CustomerManager extends \CanalTP\SamCoreBundle\Services\CustomerManager
         $this->om->flush();
     }
 
+    public function archive($customer)
+    {
+        $customer->setLocked(true);
+        $usersOfCustomer = $customer->getUsers();
+        foreach ($usersOfCustomer as $user) {
+            $user->setLocked(true);
+        }
+        $this->om->persist($customer);
+        $this->om->flush();
+    }
+
     protected function createCustomerApplicationRelation($customer, Application $application)
     {
         $customerApplication = new CustomerApplication();
