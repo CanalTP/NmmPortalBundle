@@ -12,6 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class CustomerRepository extends EntityRepository
 {
+
+    public function findAll() {
+        $customers = parent::findAll();
+        foreach ($customers as $key => $customer) {
+            if ($customer->getLocked()) {
+                unset($customers[$key]);
+            }
+        }
+        return $customers;
+    }
+
     public function findAllToArray()
     {
         $customers = array();
