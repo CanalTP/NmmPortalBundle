@@ -117,7 +117,7 @@ class CustomerController extends \CanalTP\SamCoreBundle\Controller\AbstractContr
      *
      * @return CanalTP\NmmPortalBundle\Entity\Customer
      */
-    public function findCustomerById ($id) {
+    private function findCustomerById ($id) {
         $customer = $this->getDoctrine()
             ->getManager()
             ->getRepository('CanalTPNmmPortalBundle:Customer')
