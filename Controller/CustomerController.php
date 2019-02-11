@@ -28,7 +28,7 @@ class CustomerController extends \CanalTP\SamCoreBundle\Controller\AbstractContr
         $customers = $this->getDoctrine()
             ->getManager()
             ->getRepository('CanalTPNmmPortalBundle:Customer')
-            ->findAll();
+            ->findBy(array('locked' => false));
 
         return $this->render(
             'CanalTPSamCoreBundle:Customer:list.html.twig',
