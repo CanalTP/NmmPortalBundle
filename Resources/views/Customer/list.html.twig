@@ -28,14 +28,11 @@
     {% endif %}
     {% for customer in customers %}
         <tr class="customer-row" customer-id="{{ customer.id }}">
-            <td><a id="edit-link" href="{{ path('sam_customer_edit', { 'id': customer.id }) }}">{{ customer.name }}</a></td>
+            <td><a class="edit-link" href="{{ path('sam_customer_edit', { 'id': customer.id }) }}" title="{{'customer.list.action.edit'|trans}}">{{ customer.name }}</a></td>
             <td><img src="{{ customer.getWebLogoPath }}" class="logo-customer-small" alt="{{ customer.name }} logo"/></td>
             <td>{{ customer.created.format('d/m/Y') }}</td>
             <td class="action">
                 <div class="btn-group">
-                    <a class="edit-btn btn btn-default" href="{{ path('sam_customer_edit', { 'id': customer.id }) }}">
-                        <span class="glyphicon glyphicon-edit array"></span> {{'customer.list.action.edit'|trans}}
-                    </a>
                     <button id="show-toggled-actions-{{ customer.id }}" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                         <span class="caret"></span>
                         <span class="sr-only">{{'ctp_core.toggle_menu'|trans}}</span>
