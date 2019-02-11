@@ -15,7 +15,17 @@ class CustomerRepository extends EntityRepository
     private $filter = array('locked' => false);
 
     public function findAll() {
-        return $this->findBy($this->filter);
+        return parent::findBy($this->filter);
+    }
+
+    public function findBy(
+        array $criterias = [],
+        array $orderBy = null,
+        $limit = null,
+        $offset = null)
+    {
+        $criterias = array_merge($criterias, $this->filter);
+        return parent::findBy($criterias, $orderBy, $limit, $offset);
     }
 
     public function findAllToArray()
@@ -31,7 +41,7 @@ class CustomerRepository extends EntityRepository
     public function findByToArray(array $criterias = [])
     {
         $customers = array();
-        $criterias = array_merge($criterias, $this->filter);
+
         foreach ($this->findBy($criterias) as $customer) {
             $customers[$customer->getId()] = $customer->getName();
         }
