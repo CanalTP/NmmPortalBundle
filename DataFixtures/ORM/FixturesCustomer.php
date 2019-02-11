@@ -32,6 +32,10 @@ class FixturesCustomer extends AbstractFixture implements OrderedFixtureInterfac
         $this->createCustomer($om, 'CanalTP', 'nmm-ihm@canaltp.fr', 'canaltp');
         $this->addPerimeterToCustomer($om, 'fr-bou', 'network:CGD', 'customer-canaltp');
 
+        $this->createCustomer($om, 'Realtime Test', 'fahmi.laajimi@canaltp.fr', 'realtime_test');
+        $this->addPerimeterToCustomer($om, 'jdr', 'network:DUA014', 'customer-realtime_test');
+
+        $this->addCustomerToApplication($om, 'app-samcore', 'customer-realtime_test', $navitiaToken);
         $this->addCustomerToApplication($om, 'app-samcore', 'customer-canaltp', $navitiaToken);
 
         $om->flush();

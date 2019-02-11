@@ -28,7 +28,7 @@ class CustomerController extends \CanalTP\SamCoreBundle\Controller\AbstractContr
         $customers = $this->getDoctrine()
             ->getManager()
             ->getRepository('CanalTPNmmPortalBundle:Customer')
-            ->findAll();
+            ->findBy(array('locked' => false));
 
         return $this->render(
             'CanalTPSamCoreBundle:Customer:list.html.twig',
@@ -56,6 +56,88 @@ class CustomerController extends \CanalTP\SamCoreBundle\Controller\AbstractContr
                 'customer' => $customer
             )
         );
+    }
+
+    public function archiveFormAction(Request $request, $id)
+    {
+        $this->isGranted('BUSINESS_MANAGE_CLIENT');
+
+        $form = $this->createArchiveForm($id);
+
+        if ($request->getMethod() == 'GET') {
+            $customer = $this->findCustomerById($id);
+            if (is_null($customer)) {
+                return $this->render(
+                    'CanalTPNmmPortalBundle:Customer:error.html.twig',
+                    array(
+                        'error' => 'customer.archive.error'
+                    )
+                );
+            }
+            return $this->render(
+                'CanalTPNmmPortalBundle:Customer:archive.html.twig',
+                array(
+                    'customer' => $customer,
+                    'archive_form' => $form->createView(),
+                )
+            );
+        }
+    }
+
+    public function saveArchiveAction (Request $request, $id)
+    {
+        $this->isGranted('BUSINESS_MANAGE_CLIENT');
+
+        $form = $this->createArchiveForm($id);
+
+        $form->bind($request);
+
+        if ($form->isValid()) {
+            $customer = $this->findCustomerById($id);
+            if (is_null($customer)) {
+                return $this->render(
+                    'CanalTPNmmPortalBundle:Customer:error.html.twig',
+                    array(
+                        'error' => 'customer.archive.error'
+                    )
+                );
+            }
+            $customerManager = $this->container->get('sam_core.customer');
+            $customerManager->archive($customer);
+            $this->addFlashMessage('success', $this->get('translator')->trans('customer.archive.flash.success', ['%customer%' => $customer->getName()]));
+        }
+
+        return $this->redirect($this->generateUrl('sam_customer_list'));
+    }
+
+    /**
+     * Find a Customer by id.
+     *
+     * @param mixed $id The customer id
+     *
+     * @return CanalTP\NmmPortalBundle\Entity\Customer
+     */
+    private function findCustomerById ($id) {
+        $customer = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('CanalTPNmmPortalBundle:Customer')
+            ->find($id);
+
+        return $customer;
+    }
+
+    /**
+     * Creates a form to archive a Customer entity by id.
+     *
+     * @param mixed $id The customer id
+     *
+     * @return Symfony\Component\Form\Form The form
+     */
+    private function createArchiveForm($id)
+    {
+        return $this->createFormBuilder(array('id' => $id))
+            ->add('id', 'hidden')
+            ->getForm();
     }
 
     private function dispatchEvent($form, $type)

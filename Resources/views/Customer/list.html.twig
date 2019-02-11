@@ -33,10 +33,10 @@
             <td>{{ customer.created.format('d/m/Y') }}</td>
             <td class="action">
                 <div class="btn-group">
-                    <a id="edit-btn" class="btn btn-default" href="{{ path('sam_customer_edit', { 'id': customer.id }) }}">
+                    <a class="edit-btn btn btn-default" href="{{ path('sam_customer_edit', { 'id': customer.id }) }}">
                         <span class="glyphicon glyphicon-edit array"></span> {{'customer.list.action.edit'|trans}}
                     </a>
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <button id="show-toggled-actions-{{ customer.id }}" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                         <span class="caret"></span>
                         <span class="sr-only">{{'ctp_core.toggle_menu'|trans}}</span>
                     </button>
@@ -49,6 +49,11 @@
                         <li>
                             <a class="danger" href="{{ path('sam_customer_listtokens', { 'id': customer.id }) }}">
                                 <span class="glyphicon glyphicon-barcode"></span> {{'global.actions.listtokens'|trans}}
+                            </a>
+                        </li>
+                        <li>
+                            <a id="archive-{{ customer.id }}" class="danger archive" href="{{ path('sam_customer_archive', { 'id': customer.id }) }}" data-toggle="modal" data-target="#base-modal">
+                                <span class="glyphicon glyphicon-trash"></span> {{'customer.actions.archive'|trans}}
                             </a>
                         </li>
                     </ul>

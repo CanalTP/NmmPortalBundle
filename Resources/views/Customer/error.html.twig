@@ -1,0 +1,18 @@
+{% extends ['::modal.html.twig', 'CanalTPSamCoreBundle::modal.html.twig'] %}
+
+{% block modal_title %}
+    {{'customer.archive.title'|trans}}
+{% endblock %}
+
+{% block modal_body %}
+    <p>{{error|trans}}</p>
+{% endblock %}
+
+{% block open_form %}
+<form>
+    <input type="hidden" name="_method" value="" />
+{% endblock %}
+
+ {% block modal_actions %}
+</form>
+{% endblock %}

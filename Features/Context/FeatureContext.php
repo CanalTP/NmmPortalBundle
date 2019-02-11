@@ -19,4 +19,12 @@ class FeatureContext extends MinkContext
         $this->fillField('password', 'admin');
         $this->pressButton('Connexion');
     }
+
+    /**
+     * @Given /^I wait (\d+) seconds$/
+     */
+    public function wait($seconds)
+    {
+        sleep($seconds);
+    }
 }
