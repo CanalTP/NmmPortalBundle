@@ -33,6 +33,9 @@
             <td>{{ customer.created.format('d/m/Y') }}</td>
             <td class="action">
                 <div class="btn-group">
+                    <a class="edit-btn btn btn-default" href="{{ path('sam_customer_edit', { 'id': customer.id }) }}">
+                        <span class="glyphicon glyphicon-edit array"></span> {{'customer.list.action.edit'|trans}}
+                    </a>
                     <button id="show-toggled-actions-{{ customer.id }}" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                         <span class="caret"></span>
                         <span class="sr-only">{{'ctp_core.toggle_menu'|trans}}</span>
