@@ -395,14 +395,17 @@ span.line-code{
     border-bottom:1px solid black;
 }
 
-img.logo-customer-small {
-    width: 25px;
-    height: 25px;
+/*Customers list*/
+img.logo-customer-small{
+    max-height: 42px;
 }
-
-img.logo-customer-medium {
-    width: 100px;
-    height: 100px;
+img.logo-customer-medium{
+    max-height: 100px;
+}
+.edit-link{
+    display: inline-block;
+    line-height: 2.6em;
+    width: 100%;
 }
 
 .tablesorter-headerUnSorted .tablesorter-header-inner {

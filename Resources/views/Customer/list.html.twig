@@ -28,8 +28,8 @@
     {% endif %}
     {% for customer in customers %}
         <tr class="customer-row" customer-id="{{ customer.id }}">
-            <td><a id="edit-link" href="{{ path('sam_customer_edit', { 'id': customer.id }) }}">{{ customer.name }}</a></td>
-            <td><img src="{{ customer.getWebLogoPath }}" class="logo-customer-small" alt="{{ customer.name }} logo"/></td>
+            <td><a class="edit-link" href="{{ path('sam_customer_edit', { 'id': customer.id }) }}" title="{{'customer.list.action.edit'|trans}}">{{ customer.name }}</a></td>
+            <td>{% if customer.getWebLogoPath %}<img src="{{ customer.getWebLogoPath }}" class="logo-customer-small" alt="Logo {{ customer.name }}"/>{% endif %}</td>
             <td>{{ customer.created.format('d/m/Y') }}</td>
             <td class="action">
                 <div class="btn-group">
