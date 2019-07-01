@@ -1,0 +1,16 @@
+CanalTP\NmmPortalBundle\Entity\Language:
+    type: entity
+    table: public.t_language
+    repositoryClass: CanalTP\NmmPortalBundle\Entity\LanguageRepository
+    fields:
+        code:
+            type: string
+            column: lang_code
+            id: true
+            length: 2
+            nullable: false
+        label:
+            type: string
+            column: lang_label
+            length: 255
+            nullable: false

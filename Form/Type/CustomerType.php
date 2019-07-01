@@ -13,9 +13,11 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use CanalTP\NmmPortalBundle\Form\DataTransformer\ApplicationToCustomerApplicationTransformer;
 use CanalTP\NmmPortalBundle\Form\DataTransformer\ApplicationToCustomerApplicationTransformerWithToken;
 use CanalTP\NmmPortalBundle\Entity\CustomerApplication;
+use CanalTP\NmmPortalBundle\Entity\Language;
 
 /**
  * Description of CustomerType
@@ -30,6 +32,7 @@ class CustomerType extends \CanalTP\SamCoreBundle\Form\Type\CustomerType
     private $applicationsTransformer = null;
     private $applicationsTransformerWithToken = null;
     private $withTyr = false;
+    private $language = 'fr';
 
     public function __construct(
         EntityManager $em,
@@ -79,7 +82,15 @@ class CustomerType extends \CanalTP\SamCoreBundle\Form\Type\CustomerType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
-
+        $builder->add(
+            'language',
+            EntityType::class,
+            [
+                'class' => Language::class,
+                'choice_label' => 'label',
+                'label' => 'customer.language'
+            ]
+        );
         //it's now in navitiaEntity
         $builder->remove('email');
         $builder->remove('name');

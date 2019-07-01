@@ -65,3 +65,10 @@ CanalTP\NmmPortalBundle\Entity\Customer:
             joinColumn:
                 name: cus_navitia_entity
                 referencedColumnName: nav_id
+    manyToOne:
+        language:
+            targetEntity:  CanalTP\NmmPortalBundle\Entity\Language
+            cascade: [persist]
+            joinColumn:
+                name: cus_lang
+                referencedColumnName: lang_code

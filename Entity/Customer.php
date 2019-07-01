@@ -56,6 +56,8 @@ class Customer extends \CanalTP\SamCoreBundle\Entity\AbstractEntity implements C
 
     private $navitiaEntity;
 
+    private $language;
+
     public function __construct()
     {
         $this->applications = new ArrayCollection();
@@ -117,6 +119,18 @@ class Customer extends \CanalTP\SamCoreBundle\Entity\AbstractEntity implements C
     public function getNavitiaEntity()
     {
         return $this->navitiaEntity;
+    }
+
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+
+    public function getLanguage()
+    {
+        return $this->language;
     }
 
     public function getEmail()
