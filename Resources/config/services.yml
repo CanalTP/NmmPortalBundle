@@ -22,6 +22,7 @@ parameters:
     nmm.perimeter_manager.class: CanalTP\NmmPortalBundle\Services\PerimeterManager
     nmm.customer.application.transformer_with_token.class: CanalTP\NmmPortalBundle\Form\DataTransformer\ApplicationToCustomerApplicationTransformerWithToken
 
+    nmm.customer.listener: CanalTP\NmmPortalBundle\EventListener\Customer
 services:
     navitia_component:
         class:          "%navitia_component.class%"
@@ -94,3 +95,8 @@ services:
     nmm.customer.application.transformer_with_token:
         class: %nmm.customer.application.transformer_with_token.class%
         arguments: ['@doctrine.orm.entity_manager', '@navitia_token_manager']
+
+    nmm.customer.listener:
+        class: %nmm.customer.listener%
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
