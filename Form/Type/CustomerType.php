@@ -32,7 +32,6 @@ class CustomerType extends \CanalTP\SamCoreBundle\Form\Type\CustomerType
     private $applicationsTransformer = null;
     private $applicationsTransformerWithToken = null;
     private $withTyr = false;
-    private $language = 'fr';
 
     public function __construct(
         EntityManager $em,
