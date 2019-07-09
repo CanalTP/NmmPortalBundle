@@ -62,4 +62,9 @@ class Language extends \CanalTP\SamCoreBundle\Entity\AbstractEntity
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->code;
+    }
 }
