@@ -16,3 +16,4 @@ customer:
             success: Le client %customer% a été désactivé
     actions:
         archive: Désactiver
+    language: Langue
