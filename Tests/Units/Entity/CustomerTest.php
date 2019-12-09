@@ -33,4 +33,10 @@ class CustomerTest extends EntityBaseTest
             'navitiaEntity',
             'language']);
     }
+
+    public function testGetContributor()
+    {
+        $this->entity->setIdentifier('canaltp');
+        $this->assertEquals('shortterm.tr_canaltp', $this->entity->getContributor());
+    }
 }

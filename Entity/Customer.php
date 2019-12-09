@@ -337,4 +337,9 @@ class Customer extends \CanalTP\SamCoreBundle\Entity\AbstractEntity implements C
     {
         return '/uploads/customers/logos/';
     }
+
+    public function getContributor()
+    {
+        return 'shortterm.tr_' . $this->getIdentifier();
+    }
 }
