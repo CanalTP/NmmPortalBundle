@@ -1,4 +1,4 @@
-define(['jquery'], function($){
+define(["jquery"], function($){
     var tracking = {};
 
     /**
@@ -6,7 +6,7 @@ define(['jquery'], function($){
      * @param pushData
      */
     tracking.push = function (pushData) {
-        if (typeof dataLayer !== 'undefined' && $.isArray(dataLayer)) {
+        if (typeof dataLayer !== "undefined" && $.isArray(dataLayer)) {
             dataLayer.push(pushData);
         }
     };
@@ -21,7 +21,7 @@ define(['jquery'], function($){
      */
     tracking.sendEvent = function(event, eventCategory, eventAction, eventLabel, additionalVariables)
     {
-        var pushData = (typeof additionalVariables === "object") ? additionalVariables : {}
+        var pushData = (typeof additionalVariables === "object") ? additionalVariables : {};
 
         pushData.event = event;
         pushData.eventCategory = eventCategory;
