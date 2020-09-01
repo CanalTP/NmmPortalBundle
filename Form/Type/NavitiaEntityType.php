@@ -14,7 +14,6 @@ use CanalTP\SamCoreBundle\Form\DataTransformer\ApplicationToCustomerApplicationT
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-
 /**
  * Description of CustomerType
  *
@@ -86,10 +85,10 @@ class NavitiaEntityType extends AbstractType
                     if (!array_key_exists($key, $selectedPerims)) {
                         $selectedPerims[$key] = $perimeter;
                     }
-               }
-               $data['perimeters'] = array_values($selectedPerims);
-               $event->setData($data);
-           }
+                }
+                $data['perimeters'] = array_values($selectedPerims);
+                $event->setData($data);
+            }
         };
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, $purgeDuplicates);

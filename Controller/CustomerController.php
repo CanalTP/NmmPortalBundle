@@ -84,7 +84,7 @@ class CustomerController extends \CanalTP\SamCoreBundle\Controller\AbstractContr
         }
     }
 
-    public function saveArchiveAction (Request $request, $id)
+    public function saveArchiveAction(Request $request, $id)
     {
         $this->isGranted('BUSINESS_MANAGE_CLIENT');
 
@@ -117,7 +117,8 @@ class CustomerController extends \CanalTP\SamCoreBundle\Controller\AbstractContr
      *
      * @return CanalTP\NmmPortalBundle\Entity\Customer
      */
-    private function findCustomerById ($id) {
+    private function findCustomerById($id)
+    {
         $customer = $this->getDoctrine()
             ->getManager()
             ->getRepository('CanalTPNmmPortalBundle:Customer')
