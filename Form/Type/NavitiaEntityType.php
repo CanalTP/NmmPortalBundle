@@ -86,10 +86,10 @@ class NavitiaEntityType extends AbstractType
                     if (!array_key_exists($key, $selectedPerims)) {
                         $selectedPerims[$key] = $perimeter;
                     }
-               }
-               $data['perimeters'] = array_values($selectedPerims);
-               $event->setData($data);
-           }
+                }
+                $data['perimeters'] = array_values($selectedPerims);
+                $event->setData($data);
+            }
         };
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, $purgeDuplicates);
