@@ -14,7 +14,6 @@ use CanalTP\SamCoreBundle\Form\DataTransformer\ApplicationToCustomerApplicationT
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-
 /**
  * Description of CustomerType
  *
