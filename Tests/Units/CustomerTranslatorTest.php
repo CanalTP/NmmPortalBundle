@@ -72,22 +72,24 @@ class CustomerTranslatorTest extends TranslatorTest
         return $container;
     }
 
-    public function getTranslator($loader, $options = array(), $translatorClass = '\CanalTP\NmmPortalBundle\Services\CustomerTranslator')
+    public function getTranslator($loader, $options = array(), $loaderFomat = 'loader', $translatorClass = '\CanalTP\NmmPortalBundle\Services\CustomerTranslator')
     {
         $translator = new $translatorClass(
             $this->getContainer($loader),
             new MessageSelector(),
-            array('loader' => array('loader')),
+            array($loaderFomat => array($loaderFomat)),
             $options
         );
 
-        $translator->addResource('loader', 'foo', 'fr');
-        $translator->addResource('loader', 'foo', 'en');
-        $translator->addResource('loader', 'foo', 'es');
-        $translator->addResource('loader', 'foo', 'pt-PT'); // European Portuguese
-        $translator->addResource('loader', 'foo', 'pt_BR'); // Brazilian Portuguese
-        $translator->addResource('loader', 'foo', 'fr.UTF-8');
-        $translator->addResource('loader', 'foo', 'sr@latin'); // Latin Serbian
+        if ('loader' === $loaderFomat) {
+            $translator->addResource('loader', 'foo', 'fr');
+            $translator->addResource('loader', 'foo', 'en');
+            $translator->addResource('loader', 'foo', 'es');
+            $translator->addResource('loader', 'foo', 'pt-PT'); // European Portuguese
+            $translator->addResource('loader', 'foo', 'pt_BR'); // Brazilian Portuguese
+            $translator->addResource('loader', 'foo', 'fr.UTF-8');
+            $translator->addResource('loader', 'foo', 'sr@latin'); // Latin Serbian
+        }
 
         return $translator;
     }
