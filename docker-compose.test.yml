@@ -1,0 +1,71 @@
+version: '3.7'
+
+services:
+  nmm-portal-app:
+    image: localhost/nmm-portal:test
+    user: "$_UID:$GID"
+    command: ["./docker/run_functional_test.sh"]
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.test
+    depends_on:
+      - nmm-portal-web
+      - nmm-portal-db
+      - phantomjs
+    environment:
+      SSH_AUTH_SOCK: "/ssh-agent"
+      DATABASE_HOST: "nmm-portal-db"
+      DATABASE_NAME: "test_sam"
+      DATABASE_USER: "nmm"
+      DATABASE_PASSWORD: "nmm"
+    networks:
+      - default
+    volumes:
+      - ${PWD}:/app:rw
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+      - ${HOME}/.config/composer:${HOME}/.composer:rw
+      - ${HOME}/.ssh:${HOME}/.ssh:ro
+      - ${SSH_AUTH_SOCK}:/ssh-agent:ro
+
+  nmm-portal-web:
+    image: localhost/nmm-portal:test
+    command:
+      - /bin/sh
+      - -c
+      - |
+          rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+          docker-php-entrypoint apache2-foreground
+    networks:
+      - default
+    volumes:
+      - ${PWD}/nmm_portal_functional_test:/app:rw
+    extra_hosts:
+      - "navitia2-ws.ctp.internal.canaltp.fr:10.2.16.62"
+
+  nmm-portal-db:
+    image: postgres:9.4
+    environment:
+      - POSTGRES_DB=test_sam
+      - POSTGRES_USER=nmm
+      - POSTGRES_PASSWORD=nmm
+
+  phantomjs:
+    image: wernight/phantomjs:2.1.1
+    command: ["phantomjs",  "--webdriver=8910"]
+    networks:
+      default:
+        ipv4_address: 172.16.238.42
+
+  memcached:
+    image: memcached:1.6-alpine
+    networks:
+      - default
+
+networks:
+  default:
+    name: nmm_portal_test
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "172.16.238.0/24"
