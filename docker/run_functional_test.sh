@@ -37,9 +37,9 @@ php app/console claroline:migration:upgrade CanalTPNmmPortalBundle --target=fart
 php app/console  doctrine:fixtures:load --fixtures=vendor/canaltp/nmm-portal-bundle/DataFixtures/ORM --fixtures=vendor/canaltp/sam-ecore-user-manager-bundle/DataFixtures/ORM -n -e test_sam --append -vv
 
 if [ "${ghprbPullId}" = "nopr" ]; then
-  vendor/behat/behat/bin/behat @CanalTPNmmPortalBundle -p nmm_portal --colors
+  vendor/behat/behat/bin/behat @CanalTPNmmPortalBundle -p nmm_portal --no-colors --strict --format junit --out behat --format pretty --out std
 else
-  vendor/behat/behat/bin/behat @CanalTPNmmPortalBundle -p nmm_portal --colors --stop-on-failure
+  vendor/behat/behat/bin/behat @CanalTPNmmPortalBundle -p nmm_portal --no-colors --stop-on-failure --strict --format junit --out behat --format pretty --out std
 fi
 
 cd -

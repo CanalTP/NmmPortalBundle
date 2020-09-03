@@ -50,7 +50,7 @@ pipeline {
                 sshagent (credentials: ['jenkins-kisio-bot']) {
                     sh '''
                     _UID=$(id -u) GID=$(id -g) docker-compose -f docker-compose.test.yml run --rm --no-deps nmm-portal-app \
-                    ./vendor/bin/phpunit --testsuite=NmmPortal --log-junit=docs/unit/logs/junit.xml --coverage-html=docs/unit/CodeCoverage --coverage-clover=docs/unit/logs/coverage.xml
+                    ./vendor/bin/phpunit --testsuite=NmmPortal --log-junit=docs/unit/logs/junit.xml --coverage-html=docs/unit/CodeCoverage --coverage-clover=docs/unit/CodeCoverage/coverage.xml
                     '''
                 }
             }
@@ -65,6 +65,31 @@ pipeline {
                           failingTarget: [methodCoverage: 0, conditionalCoverage: 0, statementCoverage: 0]
                       ])
                     junit testResults: 'docs/unit/logs/junit.xml'
+                }
+            }
+        }
+        stage('Functional test') {
+             environment {
+                 ghprbPullId = "${params.ghprbPullId}"
+                 sha1 = "${params.sha1}"
+             }
+            steps {
+                sh 'rm -rf nmm_portal_functional_test'
+                sshagent (credentials: ['jenkins-kisio-bot']) {
+                    sh 'git clone -b task-bot-2046-add-jenkinsfile git@github.com:CanalTP/NMM.git nmm_portal_functional_test'
+                    script {
+                         docker.withRegistry('https://docker-registry.canaltp.fr', 'jenkins-kisio-bot-registry') {
+                             sh '''
+                             _UID=$(id -u) GID=$(id -g) docker-compose -f docker-compose.test.yml run -e ghprbPullId=${ghprbPullId} -e sha1=${sha1} nmm-portal-app
+                             '''
+                         }
+                    }
+                }
+            }
+            post {
+                always {
+                    junit testResults: 'nmm_portal_functional_test/behat/*.xml'
+                    archiveArtifacts artifacts: 'nmm_portal_functional_test/web/uploads/*.png', allowEmptyArchive: true
                 }
             }
         }

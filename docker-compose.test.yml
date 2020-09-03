@@ -4,7 +4,7 @@ services:
   nmm-portal-app:
     image: localhost/nmm-portal:test
     user: "$_UID:$GID"
-    command: ["./docker/run_functional_test.sh"]
+    command: ["sh", "./docker/run_functional_test.sh"]
     build:
       context: .
       dockerfile: docker/Dockerfile.test
@@ -15,7 +15,7 @@ services:
     environment:
       SSH_AUTH_SOCK: "/ssh-agent"
       DATABASE_HOST: "nmm-portal-db"
-      DATABASE_NAME: "test_sam"
+      DATABASE_NAME: "nmm_test_sam"
       DATABASE_USER: "nmm"
       DATABASE_PASSWORD: "nmm"
     networks:
@@ -46,7 +46,7 @@ services:
   nmm-portal-db:
     image: postgres:9.4
     environment:
-      - POSTGRES_DB=test_sam
+      - POSTGRES_DB=nmm_test_sam
       - POSTGRES_USER=nmm
       - POSTGRES_PASSWORD=nmm
 
