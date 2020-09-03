@@ -4,7 +4,7 @@
  */
 namespace CanalTP\NmmPortalBundle\Tests\Units;
 
-class EntityBase
+class EntityBase extends \PHPUnit_Framework_TestCase
 {
     /**
      * Assert that a class has setters and getters

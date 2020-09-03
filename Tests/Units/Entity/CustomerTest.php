@@ -3,7 +3,7 @@
 namespace CanalTP\NmmPortalBundle\Tests\Units\Entity;
 
 use CanalTP\NmmPortalBundle\Tests\Units\EntityBase as EntityBaseTest;
-use CanalTP\RealTimeBundle\Entity\Customer as CustomerEntity;
+use CanalTP\NmmPortalBundle\Entity\Customer as CustomerEntity;
 
 class CustomerTest extends EntityBaseTest
 {
@@ -20,7 +20,6 @@ class CustomerTest extends EntityBaseTest
     public function testMethodsExists()
     {
         $this->assertClassHasMethods($this->entity, [
-            'id',
             'identifier',
             'name',
             'file',

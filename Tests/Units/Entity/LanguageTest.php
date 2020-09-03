@@ -3,7 +3,7 @@
 namespace CanalTP\NmmPortalBundle\Tests\Units\Entity;
 
 use CanalTP\NmmPortalBundle\Tests\Units\EntityBase as EntityBaseTest;
-use CanalTP\RealTimeBundle\Entity\Language as LanguageEntity;
+use CanalTP\NmmPortalBundle\Entity\Language as LanguageEntity;
 
 class LanguageTest extends EntityBaseTest
 {
