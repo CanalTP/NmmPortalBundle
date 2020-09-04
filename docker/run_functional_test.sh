@@ -1,5 +1,6 @@
 #!/bin/sh
 
+chmod +x ./docker/wait-for-it.sh
 ./docker/wait-for-it.sh -h nmm-portal-db -p 5432 -t 0 && \
 echo "Database service is UP !"
 
@@ -13,14 +14,10 @@ rm -f web/uploads/*.png
 
 composer install -o -n --ansi
 
-if [ "${ghprbPullId}" != "nopr" ] && [ "${ghprbPullId}" != "test" ]; then
-  # Quickfix if test on branch with new adding on composer json (to disable when merge and tag -> add an update on NMM)
-  composer require -vvv --update-with-dependencies --no-interaction canaltp/nmm-portal-bundle:dev-${ghprbSourceBranch}
-  cd vendor/canaltp/nmm-portal-bundle && git fetch origin +refs/pull/*:refs/remotes/origin/pr/* && git reset --hard HEAD && git checkout ${sha1} && cd ../../..;
+if [ "${ghprbPullId}" != "nopr" ]; then
+  cd vendor/canaltp/nmm-portal-bundle && git fetch origin +refs/pull/*:refs/remotes/origin/pr/* && git reset --hard HEAD && git checkout ${sha1} && cd -;
 else
-  # Quickfix if test on branch with new adding on composer json (to disable when merge and tag -> add an update on NMM)
-  composer require -vvv --update-with-dependencies --no-interaction canaltp/nmm-portal-bundle:dev-${sha1}
-  cd vendor/canaltp/nmm-portal-bundle && git fetch origin && git reset --hard HEAD && git checkout -B ${sha1} origin/${sha1} && cd ../../..;
+  cd vendor/canaltp/nmm-portal-bundle && git fetch origin && git reset --hard HEAD && git checkout -B ${sha1} origin/${sha1} && cd -;
 fi;
 composer update canaltp/sam-core-bundle
 bin/install-assets

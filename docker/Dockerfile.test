@@ -13,61 +13,24 @@ RUN curl -sS https://getcomposer.org/installer | \
 
 RUN echo 'memory_limit = -1' >> $PHP_INI_DIR/php.ini
 
-# Install internationalization extension
-RUN BUILD_DEPS="g++ libicu-dev" && \
-    apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -yq \
-    $BUILD_DEPS \
-	&& docker-php-ext-configure intl \
-    && docker-php-ext-install intl \
-    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false $BUILD_DEPS \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install xdebug extension
-RUN pecl install \
-		xdebug-2.5.0 \
-	&& docker-php-ext-enable \
-		xdebug
-
-# Install opcache extension
-RUN docker-php-ext-install opcache \
-    && docker-php-ext-enable opcache \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get autoremove -y
-RUN echo 'opcache.max_accelerated_files = 10000' >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
-RUN echo 'opcache.enable_cli = 1' >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
-
-# Install openssh-client
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -yq \
-    openssh-client \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install acl
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -yq \
-    acl \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install jq
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -yq \
-    jq \
-    && rm -rf /var/lib/apt/lists/*
-
 # Install extensions
-RUN BUILD_DEPS="libcurl3-dev g++ libicu-dev zlib1g-dev libxml2-dev zlib1g-dev" \
+RUN BUILD_DEPS="libcurl3-dev g++ zlib1g-dev libxml2-dev" \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -yq \
-		$BUILD_DEPS \
+        $BUILD_DEPS \
+        openssh-client \
+        acl \
+        jq \
+        libicu-dev \
         libpq-dev \
         libmcrypt-dev \
         libmemcached-dev \
-    && docker-php-ext-configure \
-		pgsql -with-pgsql=/usr/local/pgsql \
-	&& docker-php-ext-install \
-		bcmath \
-		pgsql \
+        postgresql-client-9.4 \
+    && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
+    && docker-php-ext-install \
+        opcache \
+        bcmath \
+        pgsql \
         curl \
         intl \
         mbstring \
@@ -78,13 +41,14 @@ RUN BUILD_DEPS="libcurl3-dev g++ libicu-dev zlib1g-dev libxml2-dev zlib1g-dev" \
         pcntl \
         pdo \
         pdo_pgsql \
+    && pecl channel-update pecl.php.net \
     && pecl install \
+        xdebug-2.5.0 \
         memcached \
-	&& docker-php-ext-enable \
-		bcmath \
-		pgsql \
+    && docker-php-ext-enable \
+        opcache \
+        bcmath \
         curl \
-        intl \
         mbstring \
         zip \
         xml \
@@ -92,10 +56,13 @@ RUN BUILD_DEPS="libcurl3-dev g++ libicu-dev zlib1g-dev libxml2-dev zlib1g-dev" \
         mcrypt \
         memcached \
         pcntl \
-        pdo \
-        pdo_pgsql \
+        xdebug \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false $BUILD_DEPS \
     && rm -rf /var/lib/apt/lists/*
+
+# opcache conf
+RUN echo 'opcache.max_accelerated_files = 10000' >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
+RUN echo 'opcache.enable_cli = 1' >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
 
 COPY docker/apache.conf /etc/apache2/sites-available/000-default.conf
 
