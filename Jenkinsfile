@@ -49,7 +49,7 @@ pipeline {
             steps {
                 sshagent (credentials: ['jenkins-kisio-bot']) {
                     sh '''
-                    rm -rf docs && \
+                    rm -rf docs
                     _UID=$(id -u) GID=$(id -g) docker-compose -f docker-compose.test.yml run --rm --no-deps nmm-portal-app \
                     ./vendor/bin/phpunit --testsuite=NmmPortal --log-junit=docs/unit/logs/junit.xml --coverage-html=docs/unit/CodeCoverage --coverage-clover=docs/unit/CodeCoverage/coverage.xml
                     '''
@@ -76,14 +76,11 @@ pipeline {
              }
             steps {
                 sshagent (credentials: ['jenkins-kisio-bot']) {
-                    sh 'rm -rf nmm_portal_functional_test && git clone -b task-bot-2046-add-jenkinsfile git@github.com:CanalTP/NMM.git nmm_portal_functional_test'
-                    script {
-                         docker.withRegistry('https://docker-registry.canaltp.fr', 'jenkins-kisio-bot-registry') {
-                             sh '''
-                             _UID=$(id -u) GID=$(id -g) docker-compose -f docker-compose.test.yml run -e ghprbPullId=${ghprbPullId} -e sha1=${sha1} nmm-portal-app
-                             '''
-                         }
-                    }
+                    sh '''
+                    rm -rf nmm_portal_functional_test
+                    git clone -b task-bot-2046-add-jenkinsfile git@github.com:CanalTP/NMM.git nmm_portal_functional_test
+                    _UID=$(id -u) GID=$(id -g) docker-compose -f docker-compose.test.yml run -e ghprbPullId=${ghprbPullId} -e sha1=${sha1} nmm-portal-app
+                    '''
                 }
             }
             post {
