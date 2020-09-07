@@ -54,7 +54,7 @@ For behat test, you need to have access to the repository [NMM](https://github.c
 Launch with :
 ```
 rm -rf nmm_portal_functional_test
-git clone -b task-bot-2046-add-jenkinsfile git@github.com:CanalTP/NMM.git nmm_portal_functional_test
+git clone git@github.com:CanalTP/NMM.git nmm_portal_functional_test
 _UID=$(id -u) GID=$(id -g) docker-compose -f docker-compose.test.yml run -e ghprbPullId=${ghprbPullId} -e sha1=$(git rev-parse HEAD) nmm-portal-app
 ```
 
