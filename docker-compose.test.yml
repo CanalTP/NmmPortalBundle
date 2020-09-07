@@ -40,8 +40,6 @@ services:
       - default
     volumes:
       - ${PWD}/nmm_portal_functional_test:/app:rw
-    extra_hosts:
-      - "navitia2-ws.ctp.internal.canaltp.fr:10.2.16.62"
 
   nmm-portal-db:
     image: postgres:9.4
