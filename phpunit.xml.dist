@@ -8,7 +8,7 @@
 >
     <testsuites>
         <testsuite name="NmmPortal">
-            <directory>./Tests/</directory>
+            <directory>./Tests</directory>
         </testsuite>
     </testsuites>
 
@@ -20,6 +20,9 @@
                 <directory>./Resources</directory>
                 <directory>./Tests</directory>
                 <directory>./Migrations</directory>
+                <directory>./Features</directory>
+                <directory>./DataFixtures</directory>
+                <directory>./nmm_portal_functional_test</directory>
             </exclude>
         </whitelist>
     </filter>

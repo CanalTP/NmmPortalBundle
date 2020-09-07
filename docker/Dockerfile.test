@@ -1,0 +1,59 @@
+FROM php:7.0.20-apache
+
+WORKDIR /app
+
+# Install composer
+RUN curl -sS https://getcomposer.org/installer | \
+    php -- --install-dir=/usr/bin/ --filename=composer \
+    && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -yq \
+        unzip \
+        git \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get autoremove -y
+
+RUN echo 'memory_limit = -1' >> $PHP_INI_DIR/php.ini
+
+# Install extensions
+RUN BUILD_DEPS="libcurl3-dev g++ zlib1g-dev libxml2-dev" \
+    && apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -yq \
+        $BUILD_DEPS \
+        openssh-client \
+        acl \
+        jq \
+        libicu-dev \
+        libpq-dev \
+        libmcrypt-dev \
+        libmemcached-dev \
+        postgresql-client-9.4 \
+    && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
+    && docker-php-ext-install \
+        opcache \
+        bcmath \
+        pgsql \
+        intl \
+        zip \
+        sockets \
+        mcrypt \
+        pcntl \
+        pdo_pgsql \
+    && pecl channel-update pecl.php.net \
+    && pecl install \
+        xdebug-2.5.0 \
+        memcached \
+    && docker-php-ext-enable \
+        opcache \
+        memcached \
+        xdebug \
+    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false $BUILD_DEPS \
+    && rm -rf /var/lib/apt/lists/*
+
+# opcache conf
+RUN echo 'opcache.max_accelerated_files = 10000' >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
+RUN echo 'opcache.enable_cli = 1' >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
+
+COPY docker/apache.conf /etc/apache2/sites-available/000-default.conf
+
+RUN a2enmod rewrite
+
+VOLUME [ "/app" ]
