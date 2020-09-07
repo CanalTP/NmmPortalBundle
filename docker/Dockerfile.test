@@ -31,15 +31,11 @@ RUN BUILD_DEPS="libcurl3-dev g++ zlib1g-dev libxml2-dev" \
         opcache \
         bcmath \
         pgsql \
-        curl \
         intl \
-        mbstring \
         zip \
-        xml \
         sockets \
         mcrypt \
         pcntl \
-        pdo \
         pdo_pgsql \
     && pecl channel-update pecl.php.net \
     && pecl install \
@@ -47,15 +43,7 @@ RUN BUILD_DEPS="libcurl3-dev g++ zlib1g-dev libxml2-dev" \
         memcached \
     && docker-php-ext-enable \
         opcache \
-        bcmath \
-        curl \
-        mbstring \
-        zip \
-        xml \
-        sockets \
-        mcrypt \
         memcached \
-        pcntl \
         xdebug \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false $BUILD_DEPS \
     && rm -rf /var/lib/apt/lists/*
