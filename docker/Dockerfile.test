@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | \
-    php -- --install-dir=/usr/bin/ --filename=composer \
+    php -- --install-dir=/usr/bin/ --filename=composer --version=1.10.16 \
     && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -yq \
         unzip \
         git \
